@@ -20,7 +20,16 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if(state is LoginSuccessState){
+            if(state.loginModel.status){
+              showToast(text: state.loginModel.message, state: ToastStates.SUCCESS);
+            }else{
+              showToast(text: state.loginModel.message, state: ToastStates.ERROR);
+
+            }
+          }
+        },
         builder: (context, state) => Scaffold(
           body: Padding(
             padding: const EdgeInsets.all(10.0),
