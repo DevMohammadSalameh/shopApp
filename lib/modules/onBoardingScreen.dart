@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/modules/login/loginScreen.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../shared/styles/colors.dart';
 
@@ -32,6 +33,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         actions: [
           TextButton(
             onPressed: () {
+              CachHelper.setData(key: "skippedLanding", value: true);
               navigateAndFinish(context, LoginScreen());
             },
             child: Text(
@@ -71,7 +73,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 FloatingActionButton(
                   onPressed: () {
                     if(isLast){
-                      navigateTo(context, LoginScreen());
+                      CachHelper.setData(key: "skippedLanding", value: true);
+                      navigateAndFinish(context, LoginScreen());
                     }
                     else{pageController.nextPage(
                         duration: Duration(

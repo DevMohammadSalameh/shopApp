@@ -1,23 +1,29 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shop_app/modules/login/loginScreen.dart';
 import 'package:shop_app/netwoek/remote/dio_helper.dart';
+import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:shop_app/shared/styles/colors.dart';
 import 'modules/onBoardingScreen.dart';
 
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
+  await CachHelper.init();
   Bloc.observer = MyBlocObserver();
-  runApp( MyApp());
+
+  var skippedLanding =await CachHelper.getData(key: "skippedLanding");
+  runApp(MyApp(skippedLanding));
 }
 
 class MyApp extends StatelessWidget {
 
+  final bool? skipped;
+  const MyApp(this.skipped, {super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,9 +42,12 @@ class MyApp extends StatelessWidget {
               background: backgroundColor,
               onBackground: onBackgroundColor,
               surface: surfaceColor,
-              onSurface: onSurfaceColor)
+              onSurface: onSurfaceColor)),
+      home: ConditionalBuilder(
+        condition: skipped??false,
+        builder: (context) => const LoginScreen(),
+        fallback: (context) => OnBoardingScreen(),
       ),
-      home:  OnBoardingScreen(),
     );
   }
 }
