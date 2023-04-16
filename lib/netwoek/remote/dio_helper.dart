@@ -2,28 +2,27 @@ import 'package:dio/dio.dart';
 
 class DioHelper {
   static Dio? dio;
-  static Map<String,dynamic>? headers= {
-    "Content-Type":"application/json",
-  };
+
   static init(){
     dio = Dio(
       BaseOptions(
         baseUrl: "https://student.valuxapps.com/api/",
         receiveDataWhenStatusError: true,
-        headers: headers,
+
       )
     );
   }
 
   static Future<Response> getData({
     required String url,
-    required Map<String, dynamic> query,
+    Map<String, dynamic>? query,
     String lang = 'ar',
-    String? authorization,
+    String? token,
 })async{
     dio!.options.headers = {
+      "Content-Type":"application/json",
       'lang':lang,
-      'Authorization':authorization,
+      'Authorization':token,
     };
    return await dio!.get(url,queryParameters: query );
   }
@@ -36,6 +35,7 @@ class DioHelper {
     String? authorization,
 })async{
     dio!.options.headers = {
+      "Content-Type":"application/json",
       'lang':lang,
       'Authorization':authorization,
     };

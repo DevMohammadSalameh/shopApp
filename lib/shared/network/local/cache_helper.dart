@@ -15,7 +15,7 @@ class CachHelper {
     return sharedPreferance.get(key);
   }
 
-  static setData({
+  static Future setData({
     required String key,
     required value,
 })async{
