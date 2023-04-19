@@ -17,7 +17,7 @@ class ShopLayout extends StatelessWidget {
 
 
     return BlocProvider(
-      create: (BuildContext context) => ShopLayoutCubit()..getHomeData(),
+      create: (BuildContext context) => ShopLayoutCubit()..getHomeData()..getCategories(),
          child:  BlocConsumer<ShopLayoutCubit,ShopLayoutStates>(
           listener: (context, state) {},
           builder: (context, state) {

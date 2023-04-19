@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/models/login_model.dart';
 import 'package:shop_app/modules/login/cubit/login_states.dart';
 
-import '../../../netwoek/remote/dio_helper.dart';
+import '../../../shared/network/remote/dio_helper.dart';
 import '../../../shared/network/end_points.dart';
 
 class LoginCubit extends Cubit<LoginStates> {

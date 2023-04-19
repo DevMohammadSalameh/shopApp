@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/layout/shop_layout.dart';
 import 'package:shop_app/modules/login/loginScreen.dart';
-import 'package:shop_app/netwoek/remote/dio_helper.dart';
+import 'package:shop_app/shared/network/remote/dio_helper.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:shop_app/shared/styles/colors.dart';
 import 'modules/onBoardingScreen.dart';
