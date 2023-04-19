@@ -46,12 +46,12 @@ class ShopLayout extends StatelessWidget {
                     cubit.changeBottomNav(index);
                   },
                   currentIndex: cubit.currentIndex,
-                  items: const [
+                  selectedItemColor: secondaryColor,
+                  items:  const [
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home,color: primaryColor,),
+                      icon:  Icon(Icons.home,color: primaryColor,),
                       label: "Home",
-                      activeIcon: Icon(Icons.home,color: secondaryColor,),
-                    ),
+                    activeIcon:  Icon(Icons.home,color: secondaryColor,)),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.apps,color: primaryColor,),
                       label: "Categories",
@@ -60,12 +60,12 @@ class ShopLayout extends StatelessWidget {
                     BottomNavigationBarItem(
                       icon: Icon(Icons.favorite,color: primaryColor,),
                       label: "Favorites",
-                      activeIcon: Icon(Icons.favorite,color: secondaryColor,),
+                      activeIcon: Icon(Icons.favorite,color: secondaryColor,)
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.settings,color: primaryColor,),
                       label: "Settings",
-                      activeIcon: Icon(Icons.settings,color: secondaryColor,),
+                      activeIcon: Icon(Icons.settings,color: secondaryColor,)
                     ),
                   ],
                 )

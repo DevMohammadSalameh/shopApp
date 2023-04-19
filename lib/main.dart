@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,8 +25,10 @@ void main() async {
   }else if(token==null){
     startWidget = const LoginScreen();}
   else{
-    startWidget =  ShopLayout();
+    startWidget =  const ShopLayout();
   }
+
+  print(token);
 
   runApp(MyApp(startWidget));
 }

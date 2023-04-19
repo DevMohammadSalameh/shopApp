@@ -6,6 +6,7 @@ import 'package:shop_app/layout/cubit/layout_cubit.dart';
 import 'package:shop_app/layout/cubit/layout_states.dart';
 import 'package:shop_app/models/categories_model.dart';
 import 'package:shop_app/models/home_model.dart';
+import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/styles/colors.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -14,12 +15,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopLayoutCubit, ShopLayoutStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is ShopLayoutSuccessChangeFavState){
+         if(!state.model.status){
+           showToast(text: state.model.message, state: ToastStates.ERROR);
+         }
+        }
+      },
       builder: (context, state) {
         var cubit = ShopLayoutCubit.get(context);
         return ConditionalBuilder(
           condition: cubit.homeModel != null && cubit.categoriesModel != null,
-          builder: (context) => homeBuilder(cubit.homeModel, cubit.categoriesModel),
+          builder: (context) => homeBuilder(cubit.homeModel, cubit.categoriesModel,context),
           fallback: (context) => const Center(
             child: CircularProgressIndicator(),
           ),
@@ -28,14 +35,40 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget homeBuilder(HomeModel? model, CategoriesModel? categoriesModel) {
+  Widget homeBuilder(HomeModel? model, CategoriesModel? categoriesModel,context) {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
         children: [
+          const SizedBox(
+            height: 3,
+          ),
+          SizedBox(
+            height: 40,
+            child: ListView.separated(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => categoryItem(categoriesModel.data.data[index]),
+                separatorBuilder: (context, index) => const SizedBox(width: 0,),
+                itemCount: categoriesModel!.data.data.length),
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            color: Colors.grey[100],
+            child: GridView.count(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              childAspectRatio: 1 / 1.75,
+              crossAxisSpacing: 3.0,
+              mainAxisSpacing: 3.0,
+              children: List.generate(model!.data.products.length,
+                  (index) => productItem(model.data.products[index],context)),
+            ),
+          ),
           CarouselSlider(
-              items: model!.data.banners.map(
-                (e) {
+              items: model.data.banners.map(
+                    (e) {
                   return Image(
                     image: NetworkImage(
                       e.image,
@@ -57,38 +90,12 @@ class HomeScreen extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 viewportFraction: 1.0,
               )),
-          const SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            height: 60,
-            child: ListView.separated(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => categoryItem(categoriesModel.data.data[index]),
-                separatorBuilder: (context, index) => const SizedBox(width: 0,),
-                itemCount: categoriesModel!.data.data.length),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            color: Colors.grey[100],
-            child: GridView.count(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              childAspectRatio: 1 / 1.75,
-              crossAxisSpacing: 3.0,
-              mainAxisSpacing: 3.0,
-              children: List.generate(model.data.products.length,
-                  (index) => productItem(model.data.products[index])),
-            ),
-          ),
         ],
       ),
     );
   }
 
-  Widget productItem(ProductModel model) {
+  Widget productItem(ProductModel model,context) {
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -158,20 +165,19 @@ class HomeScreen extends StatelessWidget {
                 ),
               const Spacer(),
               IconButton(
-                onPressed: () {},
-                icon: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 15.0,
-                  child: ConditionalBuilder(
-                    condition: model.inFavorites,
-                    builder: (context) => const Icon(
-                      Icons.favorite,
-                      color: primaryColor,
-                    ),
-                    fallback: (context) => const Icon(
-                      Icons.favorite_border,
-                      color: primaryColor,
-                    ),
+                onPressed: () {
+                  ShopLayoutCubit.get(context).changeFav(model.id);
+                  // print( model.id);
+                },
+                icon: ConditionalBuilder(
+                  condition: ShopLayoutCubit.get(context).productsWithIsFav[model.id]??false,
+                  builder: (context) => const Icon(
+                    Icons.favorite,
+                    color: primaryColor,
+                  ),
+                  fallback: (context) => const Icon(
+                    Icons.favorite_border,
+                    color: primaryColor,
                   ),
                 ),
               ),
@@ -182,25 +188,23 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget categoryItem(DataModel model)=> Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-        border: Border.all(
-          color: primaryColor,
-          width: 5,
-          style: BorderStyle.solid,
-        ),
+  Widget categoryItem(DataModel model)=> Container(
+    margin: const EdgeInsets.symmetric(horizontal: 1),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(50),
+      border: Border.all(
+        color: primaryColor,
+        width: 5,
+        style: BorderStyle.solid,
       ),
-      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-      child:   Center(
-        child: Text(model.name,style: const TextStyle(
-          color: primaryColor,
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        )),
-      ),
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    child:   Center(
+      child: Text(model.name,style: const TextStyle(
+        color: primaryColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),),
     ),
   );
 }
