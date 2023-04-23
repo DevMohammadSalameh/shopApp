@@ -112,6 +112,7 @@ class HomeScreen extends StatelessWidget {
               Image(
                 image: NetworkImage(
                   model.image,
+                  scale: 1,
                 ),
                 height: 200,
                 width: double.infinity,

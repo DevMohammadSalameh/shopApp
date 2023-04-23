@@ -52,7 +52,6 @@ class ShopLayoutCubit extends Cubit<ShopLayoutStates> {
     });
   }
 
-  //TODO: finished fav icon functionality handled immediate icon change vid min : 30
   FavoriteModel? favoriteModel;
 
   void changeFav(int id) {
@@ -69,6 +68,8 @@ class ShopLayoutCubit extends Cubit<ShopLayoutStates> {
       favoriteModel = FavoriteModel.fromJson(value.data);
       if (!favoriteModel!.status) {
         productsWithIsFav[id] = !productsWithIsFav[id]!;
+      }else{
+        getFavorites();
       }
       emit(ShopLayoutSuccessChangeFavState(favoriteModel!));
     }).catchError((error) {
@@ -92,4 +93,21 @@ class ShopLayoutCubit extends Cubit<ShopLayoutStates> {
       emit(ShopLayoutErrorCategoriesState());
     });
   }
+
+FavoritesModel? favoritesModel;
+
+  void getFavorites() {
+    emit(ShopLayoutLoadingGetFavoritesState());
+    DioHelper.getData(
+      url: FAVORITE,
+      token: token,
+    ).then((value) {
+      favoritesModel = FavoritesModel.fromJson(value.data);
+      emit(ShopLayoutSuccessGetFavoritesState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopLayoutErrorGetFavoritesState());
+    });
+  }
+
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/cubit/layout_cubit.dart';
-import 'package:shop_app/modules/cart/cart_screen.dart';
 import 'package:shop_app/modules/search/search_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/styles/colors.dart';
@@ -17,7 +16,7 @@ class ShopLayout extends StatelessWidget {
 
 
     return BlocProvider(
-      create: (BuildContext context) => ShopLayoutCubit()..getHomeData()..getCategories(),
+      create: (BuildContext context) => ShopLayoutCubit()..getHomeData()..getCategories()..getFavorites(),
          child:  BlocConsumer<ShopLayoutCubit,ShopLayoutStates>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -31,12 +30,6 @@ class ShopLayout extends StatelessWidget {
                         navigateTo(context, const SearchScreen());
                       },
                       icon: const Icon(Icons.search),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        navigateTo(context, const CartScreen());
-                      },
-                      icon: const Icon(Icons.shopping_cart),
                     ),
                   ],
                 ),

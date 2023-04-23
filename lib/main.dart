@@ -28,7 +28,7 @@ void main() async {
     startWidget =  const ShopLayout();
   }
 
-  print(token);
+  print("Token : $token");
 
   runApp(MyApp(startWidget));
 }

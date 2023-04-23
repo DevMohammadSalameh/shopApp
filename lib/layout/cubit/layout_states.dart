@@ -25,3 +25,9 @@ class ShopLayoutSuccessChangeFavState extends ShopLayoutStates{
 }
 
 class ShopLayoutErrorChangeFavState extends ShopLayoutStates{}
+
+class ShopLayoutLoadingGetFavoritesState extends ShopLayoutStates{}
+
+class ShopLayoutSuccessGetFavoritesState extends ShopLayoutStates{}
+
+class ShopLayoutErrorGetFavoritesState extends ShopLayoutStates{}
