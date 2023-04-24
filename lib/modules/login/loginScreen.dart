@@ -9,7 +9,9 @@ import 'package:shop_app/modules/login/cubit/login_states.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/styles/colors.dart';
 
+import '../../shared/components/constants.dart';
 import '../../shared/network/local/cache_helper.dart';
+import '../register/registerScreen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -26,13 +28,15 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if(state is LoginSuccessState){
             if(state.loginModel.status){
-              CachHelper.setData(key: "token", value: state.loginModel.data!.token).then((value) {
-                showToast(text: state.loginModel.message, state: ToastStates.SUCCESS);
+              CacheHelper.setData(key: "token", value: state.loginModel.data!.token).then((value) {
+                token = state.loginModel.data!.token;
+                print(token);
+                showToast(text: state.loginModel.message??"login successfully", state: ToastStates.SUCCESS);
                 navigateAndFinish(context, ShopLayout());
               });
 
             }else{
-              showToast(text: state.loginModel.message, state: ToastStates.ERROR);
+              showToast(text: state.loginModel.message??"login failed", state: ToastStates.ERROR);
 
             }
           }
@@ -69,11 +73,13 @@ class LoginScreen extends StatelessWidget {
                           validate: (value){
                             if (value!.isEmpty) {
                               return "Email cannot be empty";
-                            } else {
+                            } else
+                            {
                               if (!(value.contains('@') || value.contains('.'))) {
                                 return "pleas enter a valid email, example@mail.com ";
                               }
                             }
+                            return null;
                       },
                           label: "email",
                           labelStyle: TextStyle(color: primaryColor),
@@ -86,7 +92,8 @@ class LoginScreen extends StatelessWidget {
                           type: TextInputType.number,
                           validate: (value){if(value!.isEmpty){
                             return "password cannot be empty";
-                          }},
+                          }
+                          return null;},
                           label: "password",
                           labelStyle: TextStyle(color: primaryColor),
                           onSubmit: (value){
@@ -105,13 +112,16 @@ class LoginScreen extends StatelessWidget {
                       SizedBox(
                         height: 30,
                       ),
-                      defaultTextButton(function: (){
+                      defaultTextButton(
+                          function: (){
                         if (formKey.currentState!.validate()) {
                           LoginCubit.get(context).userLogin(
                               email: emailController.text,
                               password: passwordController.text);
+
                         }
-                      }, child: ConditionalBuilder(
+                      },
+                          child: ConditionalBuilder(
                         condition: state is! LoginLoadingState,
                         builder: (context) => Text(
                           "JOIN",
@@ -129,19 +139,6 @@ class LoginScreen extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Text("forget password ?"),
-                          TextButton(
-                              onPressed: () {
-                                //TODO: forget password screen
-                              },
-                              child: Text(
-                                "Yes i did!",
-                                style: TextStyle(color: primaryColor),
-                              ))
-                        ],
-                      ),
-                      Row(
-                        children: [
                           Text("Don't have an account ?"),
                           TextButton(
                               style: ButtonStyle(
@@ -149,7 +146,7 @@ class LoginScreen extends StatelessWidget {
                                     EdgeInsets.fromLTRB(5, 0, 0, 0)),
                               ),
                               onPressed: () {
-                                //TODO: create an account screen
+                               navigateTo(context, RegisterScreen());
                               },
                               child: Text(
                                 "Create an account",

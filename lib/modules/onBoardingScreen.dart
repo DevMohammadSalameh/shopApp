@@ -33,7 +33,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              CachHelper.setData(key: "skippedLanding", value: true);
+              CacheHelper.setData(key: "skippedLanding", value: true);
               navigateAndFinish(context, LoginScreen());
             },
             child: Text(
@@ -73,7 +73,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 FloatingActionButton(
                   onPressed: () {
                     if(isLast){
-                      CachHelper.setData(key: "skippedLanding", value: true);
+                      CacheHelper.setData(key: "skippedLanding", value: true);
                       navigateAndFinish(context, LoginScreen());
                     }
                     else{pageController.nextPage(

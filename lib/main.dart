@@ -14,11 +14,11 @@ import 'shared/components/constants.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
-  await CachHelper.init();
+  await CacheHelper.init();
   Bloc.observer = MyBlocObserver();
 
-  var skippedLanding =await CachHelper.getData(key: "skippedLanding");
-   token = await CachHelper.getData(key: "token");
+  var skippedLanding =await CacheHelper.getData(key: "skippedLanding");
+   token = await CacheHelper.getData(key: "token");
   Widget startWidget;
   if(!skippedLanding||skippedLanding==null){
     startWidget = OnBoardingScreen();

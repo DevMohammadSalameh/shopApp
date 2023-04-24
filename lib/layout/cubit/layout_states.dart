@@ -31,3 +31,9 @@ class ShopLayoutLoadingGetFavoritesState extends ShopLayoutStates{}
 class ShopLayoutSuccessGetFavoritesState extends ShopLayoutStates{}
 
 class ShopLayoutErrorGetFavoritesState extends ShopLayoutStates{}
+
+class ShopLayoutLoadingUserDataState extends ShopLayoutStates{}
+
+class ShopLayoutSuccessUserDataState extends ShopLayoutStates{}
+
+class ShopLayoutErrorUserDataState extends ShopLayoutStates{}

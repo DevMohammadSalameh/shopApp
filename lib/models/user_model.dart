@@ -1,31 +1,33 @@
-class LoginModel{
+class UserModel{
   late bool status;
-  late String message;
-  late LoginData? data;
+  late String? message;
+  late UserData? data;
 
-  LoginModel.fromJson(json){
+  UserModel.fromJson(json){
     status = json["status"];
     message = json["message"];
-    data =  json["data"]!=null ? LoginData.fromJson(json["data"]): null;
+    data =  json["data"]!=null ? UserData.fromJson(json["data"]): null;
   }
 }
 
-class LoginData{
+class UserData{
   late int id;
   late String name;
+  late String email;
   late String phone;
   late String image;
   late int points;
   late int credit;
   late String token;
 
-  LoginData.fromJson(json){
+  UserData.fromJson(json){
     id = json["id"];
     name = json["name"];
+    email = json["email"];
     phone = json["phone"];
     image = json["image"];
-    points = json["points"];
-    credit = json["credit"];
+    points = json["points"]??0;
+    credit = json["credit"]??0;
     token = json["token"];
   }
 }

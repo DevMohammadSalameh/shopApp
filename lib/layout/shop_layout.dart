@@ -16,11 +16,12 @@ class ShopLayout extends StatelessWidget {
 
 
     return BlocProvider(
-      create: (BuildContext context) => ShopLayoutCubit()..getHomeData()..getCategories()..getFavorites(),
+      create: (BuildContext context) => ShopLayoutCubit()..getHomeData()..getCategories()..getFavorites()..getUserData(),
          child:  BlocConsumer<ShopLayoutCubit,ShopLayoutStates>(
           listener: (context, state) {},
           builder: (context, state) {
             var cubit = ShopLayoutCubit.get(context);
+
             return Scaffold(
                 appBar: AppBar(
                   title: const Text("shoppi"),

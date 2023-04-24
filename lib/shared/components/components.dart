@@ -78,6 +78,7 @@ Widget defaultFormField({
 }) =>
     TextFormField(
       controller: controller,
+      style: const TextStyle(color: primaryColor),
       keyboardType: type,
       obscureText: isPassword,
       enabled: isClickable,
